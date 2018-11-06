@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      td {
+        width: 50px;
+        height: 50px;
+        border: 1px solid red;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table id = 'field'>
+      <tr>
+        <td class = 'cell'></td>
+        <td class = 'cell'></td>
+        <td class = 'cell'></td>
+      </tr>
+      <tr>
+        <td class = 'cell'></td>
+        <td class = 'cell'></td>
+        <td class = 'cell'></td>
+      </tr>
+      <tr>
+        <td class = 'cell'></td>
+        <td class = 'cell'></td>
+        <td class = 'cell'></td>
+      </tr>
+    </table><br>
+    Победитель X: <span id = 'infoX'>0</span><br><br>
+    Победитель O: <span id = 'infoY'>0</span><br><br>
+    <button type="button">Сначала</button>
+    <script type="text/javascript">
+      let table = document.querySelector('#field');
+      let infoX = document.querySelector('#infoX');
+      let infoY = document.querySelector('#infoY');
+
+      initGame(table, infoX, infoY);
+
+      function initGame(table) {
+        let cells = table.querySelectorAll('.cell');
+
+        let button = document.querySelector('button');
+        let gamer = 'X';
+
+        for (let elem of cells) {
+          elem.addEventListener('click', addClick);
+        }
+
+        button.addEventListener('click', function () {
+          initGame(table);
+          clearCells(cells);
+        });
+
+        function clearCells (cells) {
+          for (elem of cells) {
+            elem.innerHTML = '';
+          }
+        }
+
+        function addClick () {
+          this.innerHTML = gamer;
+          gamer = getGamer(gamer);
+
+          this.removeEventListener('click', addClick);
+
+          let winner = getWinner(cells);
+
+          if (winner != false) {
+            getInfo(infoX, infoY, winner);
+            deleteClick(cells, addClick);
+          } else {
+            getDraw(cells);
+          }
+        }
+
+        function getDraw (cells) {
+          let result = 0;
+          for (let elem of cells) {
+            if (elem.innerHTML != '') {
+              result++;
+            } if (result == cells.length) {
+              alert('Ничья');
+            }
+          }
+          }
+
+
+        function deleteClick (elems, func) {
+          for (let elem of elems) {
+            elem.removeEventListener('click', addClick);
+          }
+        }
+      }
+
+      function getWinner(cells) {
+        let winCombination = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8]
+        ];
+        for (let elem of winCombination) {
+          let combo = elem;
+
+          if (cells[combo[0]].innerHTML == cells[combo[1]].innerHTML &&
+              cells[combo[1]].innerHTML == cells[combo[2]].innerHTML &&
+              cells[combo[0]].innerHTML != '') {
+                return cells[combo[0]].innerHTML;
+              }
+        }
+        return false;
+      }
+
+      function getInfo (infoX, infoY, text) {
+        if (text == 'X') {
+          infoX.innerHTML = infoX.innerHTML + 1;
+        } else {
+          infoY.innerHTML = + 1;
+        }
+      }
+
+      function getGamer(gamer) {
+        if (gamer == 'X') {
+          return 'O';
+        }
+        return 'X';
+      }
+    </script>
+  </body>
+</html>
