@@ -30,15 +30,11 @@
         <td class = 'cell'></td>
       </tr>
     </table><br>
-    Победитель X: <span id = 'infoX'>0</span><br><br>
-    Победитель O: <span id = 'infoY'>0</span><br><br>
     <button type="button">Сначала</button>
     <script type="text/javascript">
       let table = document.querySelector('#field');
-      let infoX = document.querySelector('#infoX');
-      let infoY = document.querySelector('#infoY');
 
-      initGame(table, infoX, infoY);
+      initGame(table);
 
       function initGame(table) {
         let cells = table.querySelectorAll('.cell');
@@ -70,7 +66,7 @@
           let winner = getWinner(cells);
 
           if (winner != false) {
-            getInfo(infoX, infoY, winner);
+            getInfo(winner);
             deleteClick(cells, addClick);
           } else {
             getDraw(cells);
@@ -122,11 +118,7 @@
       }
 
       function getInfo (infoX, infoY, text) {
-        if (text == 'X') {
-          infoX.innerHTML = infoX.innerHTML + 1;
-        } else {
-          infoY.innerHTML = + 1;
-        }
+        alert ('Победитель ' + text);
       }
 
       function getGamer(gamer) {
